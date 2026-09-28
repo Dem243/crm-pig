@@ -6,6 +6,7 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\OpportuniteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReclamationController;
+use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,6 +48,13 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,manager'])->group(function () {
         Route::delete('opportunites/{opportunite}', [OpportuniteController::class, 'destroy'])
             ->name('opportunites.destroy');
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('utilisateurs', [UserRoleController::class, 'index'])
+            ->name('utilisateurs.index');
+        Route::patch('utilisateurs/{user}/role', [UserRoleController::class, 'update'])
+            ->name('utilisateurs.role.update');
     });
 });
 
